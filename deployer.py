@@ -1,18 +1,30 @@
 import os
 import time
 import subprocess
+import traceback
 
-TRIGGER = r"C:\MyLoan\deploy.trigger"
 BASE = r"C:\MyLoan"
+TRIGGER = os.path.join(BASE, "deploy.trigger")
+PYTHON = r"C:\MyLoan\venv\Scripts\python.exe"
+
+def run(cmd):
+    print(f"RUN: {cmd}")
+    subprocess.call(cmd, cwd=BASE, shell=True)
 
 while True:
-    if os.path.exists(TRIGGER):
-        os.remove(TRIGGER)
+    try:
+        if os.path.exists(TRIGGER):
+            print("Deploy triggered")
+            os.remove(TRIGGER)
 
-        subprocess.call("git pull", cwd=BASE, shell=True)
-        subprocess.call(r"venv\Scripts\python -m pip install -r requirements.txt", cwd=BASE, shell=True)
-        subprocess.call(r"venv\Scripts\python -m flask db upgrade", cwd=BASE, shell=True)
+            run("git pull")
+            run(f'"{PYTHON}" -m pip install -r requirements.txt')
+            run(f'"{PYTHON}" -m flask db upgrade')
+            run("nssm restart Loan")
 
-        subprocess.call("nssm restart Loan", shell=True)
+        time.sleep(5)
 
-    time.sleep(5)
+    except Exception:
+        with open(os.path.join(BASE, "deployer_error.log"), "a") as f:
+            f.write(traceback.format_exc())
+        time.sleep(5)
