@@ -2,16 +2,55 @@ from flask import Blueprint, render_template, request, redirect, url_for, abort
 from .models import Loan, Payment
 from . import db
 import subprocess
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta,date
+
 
 main = Blueprint('main', __name__)
 
 SECRET = "170459"
 
+def enrich_loan(loan):
+    status = loan.calculate_status()
+
+    rate_day = loan.interest_rate / 365
+    rate_month = loan.interest_rate / 12
+
+    return {
+        "id": loan.id,
+        "loan_date": loan.loan_date,
+        "start_date": status["start_date"],
+
+        # อัตราดอกเบี้ย
+        "rate_year": loan.interest_rate,
+        "rate_month": rate_month,
+        "rate_day": rate_day,
+
+        # ดอกต่อวัน (บาท)
+        "daily_interest": status["daily_interest"],
+
+        # ✅ เงินคงค้างจริงหลังหัก payment
+        "principal": status["principal"],
+        "interest": status["interest"],
+    }
+
+
+
+
+
 @main.route("/")
 def index():
     loans = Loan.query.order_by(Loan.loan_date.desc()).all()
-    return render_template("index.html", loans=loans)
+    data = [enrich_loan(l) for l in loans]
+    return render_template("index.html", loans=data)
+
+
+@main.route("/manage")
+def manage():
+    loans = Loan.query.order_by(Loan.loan_date.desc()).all()
+    data = [enrich_loan(l) for l in loans]
+    return render_template("manage.html", loans=data)
+
+
 
 @main.route("/loan/new", methods=["GET", "POST"])
 def new_loan():
@@ -34,10 +73,7 @@ def new_loan():
     return render_template("new_loan.html")
 
 
-@main.route("/manage")
-def manage():
-    loans = Loan.query.order_by(Loan.loan_date.desc()).all()
-    return render_template("manage.html", loans=loans)
+
 
 @main.route("/loan/<int:loan_id>/edit", methods=["GET", "POST"])
 def edit_loan(loan_id):

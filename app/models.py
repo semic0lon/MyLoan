@@ -1,6 +1,8 @@
 from . import db
 from datetime import date, timedelta
 
+
+
 class Loan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     loan_date = db.Column(db.Date, nullable=False)
