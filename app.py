@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "testing deploy route"
+    return "testing deploy route 2"
 
 
 
@@ -31,6 +31,7 @@ def deploy():
     os.system("cd C:\\MyLoan && git pull")
 
     # สั่งให้ Task Flask รันใหม่
+    os.system('schtasks /end /tn "MyLoan Flask Server"')
     os.system('schtasks /run /tn "MyLoan Flask Server"')
 
     return "Deploy success!"
