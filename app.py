@@ -1,4 +1,5 @@
 import os
+import subprocess
 from flask import request, abort
 from flask import Flask
 
@@ -6,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "testing 10000"
+    return "testing 11"
 
 
 
@@ -22,11 +23,18 @@ def home():
 DEPLOY_KEY = "170459"  
 @app.route("/deploy")
 def deploy():
-    key = request.args.get("key")
-    if key != DEPLOY_KEY:
-        abort(403)
+    # 1) git pull
+    subprocess.run(
+        ["git", "pull"],
+        cwd=r"C:\MyLoan",
+        capture_output=True,
+        text=True
+    )
 
-        os.system("cd C:\\MyLoan && git pull")
-        os.system("nssm restart MyLoanFlask")
+    # 2) restart service แบบที่ไม่ค้าง
+    subprocess.Popen(
+        ["nssm", "restart", "MyLoanFlask"],
+        creationflags=subprocess.CREATE_NEW_CONSOLE
+    )
 
-    return "Deployed"
+    return "Deploy & Restart Service สำเร็จ"
