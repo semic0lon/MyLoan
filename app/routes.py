@@ -56,5 +56,5 @@ def delete(id):
 
 @main.route("/deploy")
 def deploy():
-    subprocess.Popen(["cmd", "/c", "deploy.bat"])
-    return "Deploy started..."
+    open("deploy.trigger", "w").close()
+    return "Deploy started"
