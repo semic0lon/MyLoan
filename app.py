@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "testing 8"
+    return "testing 9"
 
 
 
@@ -28,4 +28,7 @@ def deploy():
 
     os.system("cd C:\\MyLoan && git pull")
 
-    return "Pulled. Please wait 10 seconds..."
+    # สั่งหยุด task อย่างเดียว
+    os.system('schtasks /end /tn "MyLoan Flask Server"')
+
+    return "Pulled. Service will restart within 1 minute."
