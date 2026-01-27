@@ -1,11 +1,6 @@
-import sys
-import os
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from app import app
 from waitress import serve
+from app import create_app
 
-print("Starting Waitress...", flush=True)
+app = create_app()
 
 serve(app, host="0.0.0.0", port=5000)
