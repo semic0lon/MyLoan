@@ -1,1 +1,18 @@
-<p> Hello MVT</p>
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Loan List</h2>
+
+<a href="{{ url_for('main.add') }}">Add New Loan</a>
+
+<ul>
+    {% for loan in loans %}
+        <li>
+            {{ loan.name }} - {{ loan.amount }}
+            [<a href="{{ url_for('main.edit', id=loan.id) }}">Edit</a>]
+            [<a href="{{ url_for('main.delete', id=loan.id) }}">Delete</a>]
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
