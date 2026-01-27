@@ -1,18 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Loan List</h2>
 
-<a href="{{ url_for('main.add') }}">Add New Loan Deploy test!!</a>
+<h2>รายการเงินกู้ทั้งหมด</h2>
 
-<ul>
-    {% for loan in loans %}
-        <li>
-            {{ loan.name }} - {{ loan.amount }}
-            [<a href="{{ url_for('main.edit', id=loan.id) }}">Edit</a>]
-            [<a href="{{ url_for('main.delete', id=loan.id) }}">Delete</a>]
-        </li>
-    {% endfor %}
-</ul>
+{% for loan in loans %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <p>วันที่กู้: {{ loan.loan_date }}</p>
+        <p>เงินต้นคงเหลือ: {{ loan.calculate_status().principal }}</p>
+        <p>ดอกเบี้ยสะสม: {{ loan.calculate_status().interest }}</p>
+    </div>
+{% endfor %}
 
 {% endblock %}

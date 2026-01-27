@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>หน้าจัดการ Loan</h2>
+
+<a href="/loan/new">
+    <button>➕ เพิ่มเงินกู้ใหม่</button>
+</a>
+
+<hr>
+
+{% for loan in loans %}
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <p>วันที่กู้: {{ loan.loan_date }}</p>
+        <p>เงินต้น: {{ loan.principal }}</p>
+        <p>ดอกเบี้ย: {{ loan.interest_rate }} %</p>
+
+        <a href="/loan/{{ loan.id }}/edit">
+            <button>จัดการ / จ่ายเงิน</button>
+        </a>
+        <form action="/loan/{{ loan.id }}/delete" method="POST" style="margin-top:10px;">
+    <button type="submit"
+            onclick="return confirm('ยืนยันการลบรายการนี้?')"
+            style="background:red; color:white;">
+        ลบรายการนี้
+    </button>
+</form>
+    </div>
+{% endfor %}
+
+{% endblock %}
