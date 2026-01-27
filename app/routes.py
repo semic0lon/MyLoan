@@ -49,21 +49,12 @@ def delete(id):
     db.session.commit()
     return redirect(url_for("main.home"))
 
+
+
+
+
+
 @main.route("/deploy")
 def deploy():
-    if request.args.get("key") != SECRET:
-        abort(403)
-
-    subprocess.run(
-        ["git", "pull"],
-        cwd=r"C:\MyLoan",
-        capture_output=True,
-        text=True
-    )
-
-    subprocess.Popen(
-        ["nssm", "restart", "MyLoanFlask"],
-        creationflags=subprocess.CREATE_NEW_CONSOLE
-    )
-
-    return "Deploy & Restart สำเร็จ"
+    subprocess.Popen(["cmd", "/c", "deploy.bat"])
+    return "Deploy started..."
