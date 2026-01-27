@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "testing 11"
+    return "Maybe this is the final test"
 
 
 
@@ -23,7 +23,7 @@ def home():
 DEPLOY_KEY = "170459"  
 @app.route("/deploy")
 def deploy():
-    # 1) git pull
+    # 1 git pull
     subprocess.run(
         ["git", "pull"],
         cwd=r"C:\MyLoan",
@@ -31,7 +31,7 @@ def deploy():
         text=True
     )
 
-    # 2) restart service แบบที่ไม่ค้าง
+    # 2 restart service แบบที่ไม่ค้าง
     subprocess.Popen(
         ["nssm", "restart", "MyLoanFlask"],
         creationflags=subprocess.CREATE_NEW_CONSOLE
