@@ -26,9 +26,7 @@ def deploy():
     if key != DEPLOY_KEY:
         abort(403)
 
-    os.system("cd C:\\MyLoan && git pull")
+        os.system("cd C:\\MyLoan && git pull")
+        os.system("nssm restart MyLoanFlask")
 
-    # สั่งหยุด task อย่างเดียว
-    os.system('schtasks /end /tn "MyLoan Flask Server"')
-
-    return "Pulled. Service will restart within 1 minute."
+    return "Deployed"
