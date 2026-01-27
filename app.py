@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "testing 6"
+    return "testing 7"
 
 
 
@@ -23,15 +23,9 @@ DEPLOY_KEY = "170459"
 @app.route("/deploy")
 def deploy():
     key = request.args.get("key")
-
     if key != DEPLOY_KEY:
         abort(403)
 
-    # ดึงโค้ดล่าสุด
     os.system("cd C:\\MyLoan && git pull")
 
-    # สั่งให้ Task Flask รันใหม่
-    os.system('schtasks /end /tn "MyLoan Flask Server"')
-    os.system('schtasks /run /tn "MyLoan Flask Server"')
-
-    return "Deploy success!"
+    return "Pulled. Please wait 10 seconds..."
