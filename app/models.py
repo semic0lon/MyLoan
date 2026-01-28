@@ -2,7 +2,6 @@ from . import db
 from datetime import date, timedelta
 
 
-
 class Loan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     loan_date = db.Column(db.Date, nullable=False)
@@ -10,15 +9,15 @@ class Loan(db.Model):
     interest_rate = db.Column(db.Float, nullable=False)
 
     payments = db.relationship(
-    'Payment',
-    backref='loan',
-    lazy=True,
-    cascade="all, delete"
+        'Payment',
+        backref='loan',
+        lazy=True,
+        cascade="all, delete"
     )
 
-    # ===== method คำนวณสถานะเงินจริง =====
+    # ===== method คำนวณสถานะเงินจริง (คิดดอกตั้งแต่วันกู้) =====
     def calculate_status(self):
-        start_date = self.loan_date + timedelta(days=1)
+        start_date = self.loan_date
         current_principal = self.principal
         accrued_interest = 0.0
         last_date = start_date
@@ -28,10 +27,10 @@ class Loan(db.Model):
         for p in payments:
             days = (p.pay_date - last_date).days
 
-            # ดอกที่เกิดจากเงินต้น ณ ตอนนั้น
-            daily_rate = (current_principal * (self.interest_rate / 100)) / 365
-            interest = days * daily_rate
-            accrued_interest += interest
+            if days > 0:
+                daily_rate = (current_principal * (self.interest_rate / 100)) / 365
+                interest = days * daily_rate
+                accrued_interest += interest
 
             payment_left = p.amount
 
@@ -48,7 +47,9 @@ class Loan(db.Model):
         # คิดดอกจากวันล่าสุดถึงวันนี้
         days = (date.today() - last_date).days
         daily_rate = (current_principal * (self.interest_rate / 100)) / 365
-        accrued_interest += days * daily_rate
+
+        if days > 0:
+            accrued_interest += days * daily_rate
 
         return {
             "principal": round(current_principal, 2),

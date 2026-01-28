@@ -15,7 +15,7 @@
         <tr>
             <th>ID</th>
             <th>วันที่กู้</th>
-            <th>เริ่มคิดดอก</th>
+            <!--th>เริ่มคิดดอก</th-->
             <th>เงินต้นคงค้าง</th>
             <th>%/ปี</th>
             <th>%/เดือน</th>
@@ -37,9 +37,9 @@
                 {{ item.loan_date }}
             </td>
 
-            <td data-label="เริ่มคิดดอก">
+            <!--td data-label="เริ่มคิดดอก">
                 {{ item.start_date }}
-            </td>
+            </td-->
 
             <td data-label="เงินต้นคงค้าง">
                 {{ "{:,.2f}".format(item.principal) }}
