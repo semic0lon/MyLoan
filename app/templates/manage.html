@@ -2,22 +2,24 @@
 {% block content %}
 
 <h2>จัดการรายการเงินกู้</h2>
-<div style="margin-bottom: 20px;">
-    <a href="{{ url_for('main.new_loan') }}">
-        <button>➕ เพิ่มรายการกู้ใหม่</button>
+
+<div class="top-bar">
+    <div></div>
+    <a href="{{ url_for('main.new_loan') }}" class="btn-add">
+        ➕ ยืมเพิ่ม
     </a>
 </div>
 
-<table border="1" cellpadding="6">
+<table class="table-modern">
     <tr>
         <th>ID</th>
         <th>วันที่กู้</th>
-        <th>วันที่เริ่มคิดดอก</th>
+        <th>เริ่มคิดดอก</th>
         <th>เงินต้นคงค้าง</th>
-        <th>ดอก/ปี %</th>
-        <th>ดอก/เดือน %</th>
-        <th>ดอก/วัน %</th>
-        <th>ดอกเบี้ย/วัน</th>
+        <th>%/ปี</th>
+        <th>%/เดือน</th>
+        <th>%/วัน</th>
+        <th>ดอก/วัน</th>
         <th>ดอกสะสม</th>
         <th>จัดการ</th>
     </tr>
@@ -33,14 +35,16 @@
         <td>{{ "{:.6f}".format(item.rate_day) }}</td>
         <td>{{ "{:,.4f}".format(item.daily_interest) }}</td>
         <td>{{ "{:,.2f}".format(item.interest) }}</td>
-        <td>
-            <a href="/loan/{{ item.id }}/edit">แก้ไข</a> |
-            <form action="{{ url_for('main.delete_loan', loan_id=item.id) }}" method="POST" style="display:inline;">
-                <button type="submit" onclick="return confirm('ยืนยันการลบรายการนี้?')">
-                 🗑 ลบ
-                </button>
-            </form>
-        </td>
+<td class="actions">
+    <a href="/loan/{{ item.id }}/edit" class="btn-pay">จ่าย</a>
+
+    <form action="{{ url_for('main.delete_loan', loan_id=item.id) }}" method="POST">
+        <button type="submit" class="btn-delete"
+                onclick="return confirm('ยืนยันการลบรายการนี้?')">
+            ลบ
+        </button>
+    </form>
+</td>
     </tr>
     {% endfor %}
 </table>

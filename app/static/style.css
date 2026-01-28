@@ -4,6 +4,7 @@ body {
     background-color: #f4f6f9;
 }
 
+/* HEADER */
 .header {
     background: #1e293b;
     color: white;
@@ -29,24 +30,102 @@ body {
     text-decoration: none;
     margin-left: 25px;
     font-size: 15px;
-    transition: 0.2s;
 }
 
 .nav a:hover {
     color: #38bdf8;
 }
 
+/* LAYOUT */
 .container {
     padding: 30px;
 }
 
-.btn-primary {
-    background: #38bdf8;
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+}
+
+/* TABLE */
+.table-modern {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-modern th,
+.table-modern td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 14px;
+    text-align: center;
+}
+
+.table-modern th {
+    background: #f1f5f9;
+    font-weight: 600;
+}
+
+/* ACTION BUTTON CELL */
+.actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* BUTTONS */
+.btn-add {
+    background: #3b82f6;
     color: white;
     padding: 8px 14px;
     border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-.btn-primary:hover {
-    background: #0ea5e9;
+.btn-add:hover {
+    background: #2563eb;
+}
+
+.btn-pay,
+.btn-delete{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;   /* เล็กลง */
+    min-width: 72px;     /* พอดีคำ */
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-pay{ background: #01c71c; color: white; }
+.btn-pay:hover{ background: #16a34a; }
+
+.btn-delete{ background: #ef4444; color: white; }
+.btn-delete:hover{ background: #dc2626; }
+
+
+/* FORM */
+form input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+.top-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
