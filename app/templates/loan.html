@@ -12,7 +12,7 @@
 
 <table class="table-modern">
     <tr>
-        <th>ID</th>
+        <!--<th>ID</th>-->
         <th>วันที่กู้</th>
         <th>เงินต้นคงค้าง</th>
         <th>%/ปี</th>
@@ -24,7 +24,7 @@
 
     {% for item in loans %}
     <tr>
-        <td>{{ item.id }}</td>
+        <!--<td>{{ item.id }}</td>-->
         <td>{{ item.loan_date }}</td>
         <td>{{ "{:,.2f}".format(item.principal) }}</td>
         <td>{{ "{:.2f}".format(item.rate_year) }}%</td>
