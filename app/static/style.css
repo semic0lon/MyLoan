@@ -134,61 +134,46 @@ form input {
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
 
-    .container{
-        padding: 15px;
-    }
-
-    .top-bar{
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-    }
-
-    .btn-add{
-        text-align: center;
-        width: 100%;
-    }
-
-    /* ซ่อน table header */
-    .table-modern thead{
-        display: none;
-    }
-
     .table-modern,
+    .table-modern thead,
     .table-modern tbody,
-    .table-modern tr,
-    .table-modern td{
+    .table-modern th,
+    .table-modern td,
+    .table-modern tr {
         display: block;
         width: 100%;
     }
 
-    .table-modern tr{
-        background: white;
-        margin-bottom: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        padding: 12px;
+    .table-modern thead {
+        display: none;
     }
 
-    .table-modern td{
+    .table-modern tr {
+        background: white;
+        margin-bottom: 14px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 12px 14px;
+    }
+
+    .table-modern td {
+        display: grid;
+        grid-template-columns: 120px 1fr;  /* ⭐ ซ้าย label ขวา value */
+        align-items: center;
+        padding: 6px 0;
         border: none;
-        padding: 8px 16px 8px 120px;
-        text-align: right;
-        position: relative;
+        text-align: left;
         font-size: 14px;
     }
 
-    .table-modern td::before{
+    .table-modern td::before {
         content: attr(data-label);
-        position: absolute;
-        left: 0;
         font-weight: 600;
         color: #64748b;
-        text-align: left;
     }
 
-    .actions{
-        justify-content: flex-end;
-        margin-top: 10px;
+    .actions {
+        justify-content: flex-start;
+        margin-top: 8px;
     }
 }
