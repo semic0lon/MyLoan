@@ -172,7 +172,7 @@ form input {
 
     .table-modern td{
         border: none;
-        padding: 6px 0;
+        padding: 8px 16px 8px 120px;
         text-align: right;
         position: relative;
         font-size: 14px;
