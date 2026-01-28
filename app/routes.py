@@ -39,9 +39,14 @@ def enrich_loan(loan):
 
 @main.route("/")
 def index():
+
+    return render_template("index.html")
+
+@main.route("/loan")
+def loan():
     loans = Loan.query.order_by(Loan.loan_date.desc()).all()
     data = [enrich_loan(l) for l in loans]
-    return render_template("index.html", loans=data)
+    return render_template("loan.html", loans=data)
 
 
 @main.route("/manage")

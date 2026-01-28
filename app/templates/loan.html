@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>รายการเงินกู้</h2>
+
+<table border="1" cellpadding="6">
+    <tr>
+        <th>ID</th>
+        <th>วันที่กู้</th>
+        <!--<th>วันที่เริ่มคิดดอก</th>-->
+        <th>เงินต้นคงค้าง</th>
+        <th>อัตราดอกเบี้ย/ปี</th>
+        <th>อัตราดอกเบี้ย/เดือน</th>
+        <th>อัตราดอกเบี้ย/วัน</th>
+        <th>จำนวนดอกเบี้ยต่อวัน</th>
+        <th>ดอกสะสม</th>
+    </tr>
+
+    {% for item in loans %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.loan_date }}</td>
+       <!-- <td>{{ item.start_date }}</td>-->
+        <td>{{ "{:,.2f}".format(item.principal) }}</td>
+        <td>{{ "%.2f"|format(item.rate_year) }}%</td>
+        <td>{{ "%.2f"|format(item.rate_month) }}%</td>
+        <td>{{ "%.2f"|format(item.rate_day) }}%</td>
+        <td>{{ "%.2f"|format(item.daily_interest) }} บาท</td>
+        <td>{{ "%.2f"|format(item.interest) }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}
