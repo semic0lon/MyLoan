@@ -1,10 +1,13 @@
 from . import db
-from datetime import date, timedelta
+from datetime import date
 from decimal import Decimal, ROUND_HALF_UP
+
 
 class Loan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     loan_date = db.Column(db.Date, nullable=False)
+
+    # DB ยังเป็น Float ได้ แต่ตอนคำนวณต้องแปลง
     principal = db.Column(db.Float, nullable=False)
     interest_rate = db.Column(db.Float, nullable=False)
 
@@ -15,12 +18,15 @@ class Loan(db.Model):
         cascade="all, delete"
     )
 
-    # ===== method คำนวณสถานะเงินจริง (คิดดอกตั้งแต่วันกู้) =====
     def calculate_status(self):
         start_date = self.loan_date
-        current_principal = self.principal
-        accrued_interest = 0.0
         last_date = start_date
+
+        # ✅ แปลงเป็น Decimal ตั้งแต่ต้น
+        current_principal = Decimal(str(self.principal))
+        interest_rate = Decimal(str(self.interest_rate))
+
+        accrued_interest = Decimal("0.00")
 
         payments = sorted(self.payments, key=lambda p: p.pay_date)
 
@@ -28,16 +34,18 @@ class Loan(db.Model):
             days = (p.pay_date - last_date).days
 
             if days > 0:
-                daily_rate = (current_principal * (self.interest_rate / 100)) / 365
-                interest = days * daily_rate
+                daily_rate = (
+                    current_principal * interest_rate / Decimal(100) / Decimal(365)
+                )
+                interest = (Decimal(days) * daily_rate)
                 accrued_interest += interest
 
-            payment_left = p.amount
+            payment_left = Decimal(str(p.amount))
 
             # ตัดดอกก่อน
             if payment_left >= accrued_interest:
                 payment_left -= accrued_interest
-                accrued_interest = 0
+                accrued_interest = Decimal("0.00")
                 current_principal -= payment_left
             else:
                 accrued_interest -= payment_left
@@ -46,14 +54,16 @@ class Loan(db.Model):
 
         # คิดดอกจากวันล่าสุดถึงวันนี้
         days = (date.today() - last_date).days
-        daily_rate = (Decimal(current_principal)* Decimal(self.interest_rate)/ Decimal(100)/ Decimal(365)).quantize(Decimal("0.00"), rounding=ROUND_HALF_UP)
+        daily_rate = (
+            current_principal * interest_rate / Decimal(100) / Decimal(365)
+        ).quantize(Decimal("0.00"), rounding=ROUND_HALF_UP)
 
         if days > 0:
-            accrued_interest += days * daily_rate
+            accrued_interest += Decimal(days) * daily_rate
 
         return {
-            "principal": round(current_principal, 2),
-            "interest": round(accrued_interest, 2),
+            "principal": current_principal.quantize(Decimal("0.00"), rounding=ROUND_HALF_UP),
+            "interest": accrued_interest.quantize(Decimal("0.00"), rounding=ROUND_HALF_UP),
             "daily_interest": daily_rate,
             "start_date": start_date
         }
