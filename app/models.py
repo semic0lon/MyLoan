@@ -1,6 +1,6 @@
 from . import db
 from datetime import date, timedelta
-
+from decimal import Decimal, ROUND_HALF_UP
 
 class Loan(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -46,7 +46,7 @@ class Loan(db.Model):
 
         # คิดดอกจากวันล่าสุดถึงวันนี้
         days = (date.today() - last_date).days
-        daily_rate = (current_principal * (self.interest_rate / 100)) / 365
+        daily_rate = (Decimal(current_principal)* Decimal(self.interest_rate)/ Decimal(100)/ Decimal(365)).quantize(Decimal("0.00"), rounding=ROUND_HALF_UP)
 
         if days > 0:
             accrued_interest += days * daily_rate
@@ -54,7 +54,7 @@ class Loan(db.Model):
         return {
             "principal": round(current_principal, 2),
             "interest": round(accrued_interest, 2),
-            "daily_interest": round(daily_rate, 2),
+            "daily_interest": daily_rate,
             "start_date": start_date
         }
 
