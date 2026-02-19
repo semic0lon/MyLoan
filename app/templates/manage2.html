@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>จัดการรายการเงินกู้</h2>
+
+<div class="top-bar">
+    <div></div>
+    <a href="{{ url_for('main.new_loan2') }}" class="btn-add">
+        ➕ ยืมเพิ่ม
+    </a>
+</div>
+
+<table class="table-modern">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>วันที่กู้</th>
+            <!--th>เริ่มคิดดอก</th-->
+            <th>เงินต้นคงค้าง</th>
+            <th>%/ปี</th>
+            <th>%/เดือน</th>
+            <th>%/วัน</th>
+            <th>ดอก/วัน</th>
+            <th>ดอกสะสม</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for item in loans %}
+        <tr>
+            <td data-label="ID">
+                {{ item.id }}
+            </td>
+
+            <td data-label="วันที่กู้">
+                {{ item.loan_date }}
+            </td>
+
+            <!--td data-label="เริ่มคิดดอก">
+                {{ item.start_date }}
+            </td-->
+
+            <td data-label="เงินต้นคงค้าง">
+                {{ "{:,.2f}".format(item.principal) }}
+            </td>
+
+            <td data-label="%/ปี">
+                {{ "{:.2f}".format(item.rate_year) }}
+            </td>
+
+            <td data-label="%/เดือน">
+                {{ "{:.4f}".format(item.rate_month) }}
+            </td>
+
+            <td data-label="%/วัน">
+                {{ "{:.6f}".format(item.rate_day) }}
+            </td>
+
+            <td data-label="ดอก/วัน">
+                {{ "{:,.4f}".format(item.daily_interest) }}
+            </td>
+
+            <td data-label="ดอกสะสม">
+                {{ "{:,.2f}".format(item.interest) }}
+            </td>
+
+            <td data-label="จัดการ" class="actions">
+                <a href="/loan2/{{ item.id }}/edit" class="btn-pay">จ่าย</a>
+
+                <form action="{{ url_for('main.delete_loan2', loan_id=item.id) }}" method="POST">
+                    <button type="submit"
+                            class="btn-delete"
+                            onclick="return confirm('ยืนยันการลบรายการนี้?')">
+                        ลบ
+                    </button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

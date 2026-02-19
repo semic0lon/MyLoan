@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>จัดการ Loan ID: {{ loan.id }}</h2>
+
+<div class="card">
+    <h3>สถานะปัจจุบัน</h3>
+
+    <div class="grid-2">
+        <div>
+            <div class="label">วันที่กู้</div>
+            <div class="value">{{ loan.loan_date }}</div>
+        </div>
+
+        <div>
+            <div class="label">วันที่เริ่มคิดดอก</div>
+            <div class="value">{{ status.start_date }}</div>
+        </div>
+
+        <div>
+            <div class="label">ดอกเบี้ยต่อวัน</div>
+            <div class="value">{{ "{:,.2f}".format(status.daily_interest) }}</div>
+        </div>
+
+        <div>
+            <div class="label">เงินต้นคงเหลือ</div>
+            <div class="value">{{ "{:,.2f}".format(status.principal) }}</div>
+        </div>
+
+        <div>
+            <div class="label">ดอกเบี้ยสะสม</div>
+            <div class="value">{{ "{:,.2f}".format(status.interest) }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>บันทึกการจ่ายเงิน</h3>
+
+    <form method="POST">
+        <label>วันที่จ่าย</label>
+        <input type="date" name="pay_date" required>
+
+        <label>จำนวนเงินที่จ่าย</label>
+        <input type="number" step="0.01" name="amount" required>
+
+        <button type="submit" class="btn-submit">บันทึกการจ่าย</button>
+    </form>
+</div>
+
+<div class="card">
+    <h3>ประวัติการจ่าย</h3>
+
+    <table class="table">
+        <tr>
+            <th>วันที่จ่าย</th>
+            <th>จำนวนเงิน</th>
+        </tr>
+
+        {% for p in payments %}
+        <tr>
+            <td>{{ p.pay_date }}</td>
+            <td>{{ "{:,.2f}".format(p.amount) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">ยังไม่มีการจ่ายเงิน</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/manage2" class="back-link">⬅ กลับหน้า Manage</a>
+</div>
+
+{% endblock %}
